@@ -1,0 +1,19 @@
+.material-icons {
+  font-size: 2rem;
+  padding-right: .4rem;
+  line-height: 80%;
+}
+
+#index-banner {
+  background-image: url(../img/hero.jpg);
+  background-size: cover;
+}
+
+#logo-container {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.header {
+  font-weight: 600;
+}
