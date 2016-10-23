@@ -18,9 +18,12 @@
   font-weight: 600;
 }
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating){
-  color: #e91e63;
+  color: #ff4081;
 }
 
 .card .card-action a:not(.btn):not(.btn-large):not(.btn-floating):hover {
-  color: #f06292;
+  color: #f48fb1;
+}
+.input-field {
+  margin-top: 2rem;
 }
