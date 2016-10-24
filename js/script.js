@@ -8,9 +8,7 @@ $( document ).ready( function() {
   var cardTitleDivs = $( ".card-title" );
   var cardTitlePs = $( ".card-title ~ p" );
   var shoppingCart = $( "#shoppingCart" );
-  var newTableRow = $( "#shoppingCart :last-child" );
-  // var newTitle = $( "#shoppingCart tr:last-child :first-child" );
-  // var newPrice = $( "#shoppingCart tr:last-child :last-child" );
+
 
   // **** variables ****
   var menuTitles = [];
@@ -19,13 +17,15 @@ $( document ).ready( function() {
   menuPrices = createPriceArr( cardTitlePs );
   var menuObj = {};
   menuObj = createMenuObject( menuTitles, menuPrices );
-  var menuItem = {};
   var index;
   var orderPrices = [];
 
   // **** event listeners ****
   $( "#royaleButton" ).click( itemClicked );
-
+  $( "#arugulaPieButton" ).click( itemClicked );
+  $( "#smokedSwineButton" ).click( itemClicked );
+  $( "#iceCreamBiscuitButton" ).click( itemClicked );
+  $( "#submitButton" ).click( submitValidation );
   // **** functions ****
   function createKeyArr( cardTitleDivs ) {
     // creates an array with menu item titles - array will be used to create keys for menu object
@@ -57,18 +57,29 @@ $( document ).ready( function() {
     return menuObj;
   }
 
-  // function addItemToCart( index ) {
-  //   console.log( "adding to cart" );
-  //   var titleData = menuTitles[ index ];
-  //   var priceData = menuPrices[ index ];
-  //   $( shoppingCart ).append( '<tr></tr>' );
-  //   console.log( $( shoppingCart ) );
-  //   $( "#shoppingCart :last-child" ).append( 'td' );
-  //   $( "#shoppingCart tr:last-child :first-child" ).text( titleData );
-  //   console.log( $( "#shoppingCart tr:last-child :first-child" ) );
-  //   $( newTableRow ).append( 'td' ).text( priceData );
-  //   // $( newPrice ).text( priceData );
-  // }
+  function itemClicked() {
+    console.log( event.target.id );
+
+    var button = event.target.id;
+    switch ( button ) {
+      case "royaleButton":
+        index = 0;
+        break;
+      case "arugulaPieButton":
+        index = 1;
+        break;
+      case "smokedSwineButton":
+        index = 2;
+        break;
+      case "iceCreamBiscuitButton":
+        index = 3;
+        break;
+      default:
+        console.log( "uh oh, you got problems" );
+    }
+    return addItemToCart( index );
+  }
+
   function addItemToCart( index ) {
     var newRow = document.createElement( 'tr' );
     $( shoppingCart ).append( newRow );
@@ -81,22 +92,37 @@ $( document ).ready( function() {
     newTitle.innerText = menuTitles[ index ];
     newRow.appendChild( newTitle );
     newRow.appendChild( newPrice );
+    updateTotals( orderPrices );
   }
 
-  function itemClicked() {
-    console.log( event.target.id );
-
-    var button = event.target.id;
-    switch ( button ) {
-      case "royaleButton":
-        console.log( "switched" );
-        index = 0;
-        break;
-      default:
-
+  function updateTotals( orderPrices ) {
+    var subtotal = 0;
+    var tax = 0;
+    var total = 0;
+    for ( var i = 0; i < orderPrices.length; i++ ) {
+      subtotal += orderPrices[ i ];
     }
+    tax = ( subtotal * 0.029 );
+    total = subtotal + tax;
+    $( "#subtotal" ).text( "$" + subtotal );
+    $( "#tax" ).text( "$" + tax.toFixed( 2 ) );
+    $( "#total" ).text( "$" + total.toFixed( 2 ) );
+  }
 
-    return addItemToCart( index );
+  function submitValidation() {
+    console.log( $( "#name" ) );
+    console.log( $( "#phone" ).text() );
+    console.log( $( "#address" ).text() );
+    console.log( orderPrices );
+    if ( $( "#name" ).hasClass( "valid" ) && $( "#phone" ).hasClass( "valid" ) && $( "#address" ).hasClass( "valid" ) ) {
+      if ( orderPrices !== [] ) {
+        return Materialize.toast( "Order successfully placed!", 4000 );
+      } else {
+        return Materialize.toast( "Whoops! You didn't order anything!", 4000 );
+      }
+    } else {
+      return Materialize.toast( "Please fill in all information.", 4000 );
+    }
   }
 
 
